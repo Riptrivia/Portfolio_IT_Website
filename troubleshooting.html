@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Troubleshooting Tools</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <h2>Marcielo Pestcoe<span class="tux-span">.🐧</span></h2>
+        <div>
+            <a href="index.html">Experience</a>
+            <a href="certs.html">About & Certs</a>
+            <a href="troubleshooting.html" class="active">Troubleshooting Demos</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Live Systems Troubleshooting Utilities</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">As a systems service technician, validation tools are critical. Below are live, browser-native applications demonstrating standard hardware input testing and structural validation logic.</p>
+
+        <!-- Tool 1: Keyboard Input Matrix Tester -->
+        <div class="card">
+            <h3>Interactive Keyboard Matrix & Key Tester</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Used to verify mechanical traces or identify broken physical keys on a computer layout. Focus on the screen and tap any key on your hardware.</p>
+            <div id="key-display">Awaiting input... Press any key</div>
+            <div class="badge-grid" style="justify-content: center;" id="history-box"></div>
+        </div>
+
+        <!-- Tool 2: Network Subnet Mask/IP Validator -->
+        <div class="card">
+            <h3>IPv4 Address Format Engine</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Simulates string parsing parameters required for network connection configurations to verify octet integrity.</p>
+            <div style="margin: 1rem 0;">
+                <input type="text" id="ip-input" class="tool-input" placeholder="e.g. 192.168.1.254">
+                <br>
+                <button onclick="checkNetworkInput()" class="tool-btn">Parse & Validate</button>
+            </div>
+            <div id="tool-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Keyboard Live Diagnostics Tool Logic
+        const historyArray = [];
+        window.addEventListener('keydown', (event) => {
+            // Prevent keys like space and backspace from moving the portfolio page view
+            event.preventDefault();
+            
+            const mainDisplay = document.getElementById('key-display');
+            const historyContainer = document.getElementById('history-box');
+            
+            // Format character presentation string
+            let characterRepresentation = event.key;
+            if(characterRepresentation === ' ') characterRepresentation = 'Spacebar';
+            
+            mainDisplay.innerHTML = `Key: <span style="color: #38bdf8">${characterRepresentation}</span> | Code: <span style="color: #94a3b8">${event.code}</span>`;
+            
+            // Keep track of up to last 6 pressed keys down below as small indicators
+            if (!historyArray.includes(characterRepresentation)) {
+                historyArray.unshift(characterRepresentation);
+                if(historyArray.length > 6) historyArray.pop();
+                
+                historyContainer.innerHTML = historyArray.map(item => `<span class="badge" style="border-color: #38bdf8">${item}</span>`).join('');
+            }
+        });
+
+        // Regex Network Validation String Parsing Logic
+        function checkNetworkInput() {
+            const rawValue = document.getElementById('ip-input').value.trim();
+            const resultBox = document.getElementById('tool-result');
+            
+            // Match structural criteria for 4 octets bounding values between 0 and 255
+            const octetRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            
+            if (octetRegex.test(rawValue)) {
+                resultBox.innerText = "✓ STRING FORMAT VERIFIED: Valid IPv4 Structure.";
+                resultBox.style.color = "var(--accent-success)";
+            } else {
+                resultBox.innerText = "✗ PROTOCOL ERROR: String violates structural 8-bit octet formatting limits.";
+                resultBox.style.color = "var(--accent-fail)";
+            }
+        }
+    </script>
+</body>
+</html>
